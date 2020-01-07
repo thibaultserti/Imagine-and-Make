@@ -1,5 +1,17 @@
+#!/usr/bin/env python3
+#-*-coding:utf-8-*-
 import socket
 import select
+import signal
+import sys
+
+def signal_handler(sig, frame):
+    print("Connexion fermée")
+    for client in clients:
+        client.close()
+    connection.close()
+    sys.exit(0)
+
 
 host = ''
 port = 4242
@@ -7,10 +19,13 @@ port = 4242
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection.bind((host, port))
 connection.listen(5)
-print(f"Serveur listening on port {port}")
+print(f"Le serveur écoute sur le port {port}")
 
 clients = []
 while True:
+
+    signal.signal(signal.SIGINT, signal_handler)
+    #signal.pause()
 
     connections_waiting, wlist, xlist = select.select([connection],[], [], 0.05)
     
@@ -31,11 +46,8 @@ while True:
             msg_rcv = client.recv(1024)
             # Peut planter si le message contient des caractères spéciaux
             msg_rcv = msg_rcv.decode()
-            print("Received {}".format(msg_rcv))
-            client.send(b"Received")
-
-print("Close connection")
-for client in clients:
-    client.close()
-
-connection.close()
+            print(f"Reçu {msg_rcv}")
+            client.send(b"Ok")
+            if msg_rcv == "END":
+                client.close()
+                clients.remove(client)
