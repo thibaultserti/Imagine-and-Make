@@ -15,3 +15,7 @@ Le casier possède deux LEDs :
 
 * si verrouillé, déverouille
 * si déverrouillé, verrouille
+
+## Schéma
+
+![alt text](https://github.com/thibaultserti/Imagine-and-Make/schema.png "Schema")
