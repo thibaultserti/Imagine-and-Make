@@ -4,6 +4,7 @@ import socket
 import select
 import signal
 import sys
+from lib import *
 
 def signal_handler(sig, frame):
     print("Connexion fermée")
@@ -12,6 +13,12 @@ def signal_handler(sig, frame):
     connection.close()
     sys.exit(0)
 
+def book(client):
+    client.send("BOOK")
+
+
+def modify_csv(client):
+    pass
 
 host = ''
 port = 4242
@@ -46,8 +53,8 @@ while True:
             msg_rcv = client.recv(1024)
             # Peut planter si le message contient des caractères spéciaux
             msg_rcv = msg_rcv.decode()
-            print(f"Reçu {msg_rcv}")
-            client.send(b"Ok")
+            if msg_rcv.split(" ")[0] == "UNBOOK":
+                modify_csv(client)
             if msg_rcv == "END":
                 client.close()
                 clients.remove(client)
