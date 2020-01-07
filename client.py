@@ -5,6 +5,19 @@ import socket
 import sys
 import signal
 import time
+import re 
+
+
+ip = sys.argv[1]
+regex = '''^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
+            25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
+            25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
+            25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)''' 
+if re.search(regex, ip):  
+    print("Adresse IP valide") 
+else:  
+    print("Adresse IP invalide")
+    exit(0)
 
 def signal_handler(sig, frame):
     connection_with_server.send("END".encode())
@@ -12,7 +25,7 @@ def signal_handler(sig, frame):
     connection_with_server.close()
     sys.exit(0)
 
-host = "localhost"
+host = ip
 port = 4242
 
 connection_with_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
