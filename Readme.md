@@ -18,4 +18,4 @@ Le casier possède deux LEDs :
 
 ## Schéma
 
-![alt text](https://github.com/thibaultserti/Imagine-and-Make/schema.png "Schema")
+![alt text](https://github.com/thibaultserti/Imagine-and-Make/blob/master/schema.png "Schema")
