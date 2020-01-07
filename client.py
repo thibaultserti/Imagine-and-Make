@@ -6,6 +6,10 @@ import sys
 import signal
 import time
 import re 
+from lib_client import *
+
+
+port = 4242
 
 def signal_handler(sig, frame):
     connection_with_server.send("END".encode())
@@ -13,17 +17,9 @@ def signal_handler(sig, frame):
     connection_with_server.close()
     sys.exit(0)
 
-def unbook(chamber):
-    connection_with_server.send(f"UNBOOK {chamber}".encode())
-
-def unlock():
-    pass
-
-def diode_on():
-    pass
-
 ip = sys.argv[1]
 chamber = sys.argv[2]
+
 regex = '''^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
@@ -36,11 +32,8 @@ else:
     exit(0)
 
 
-host = ip
-port = 4242
-
 connection_with_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connection_with_server.connect((host, port))
+connection_with_server.connect((ip, port))
 print(f"Connexion établie avec le serveur sur le {port}")
 
 msg = b""
@@ -49,11 +42,16 @@ while msg != b"END" and retry < 5:
     retry = 0
     try:
         signal.signal(signal.SIGINT, signal_handler)
-        if unlock():
-            unbook()
+        msg = input("> ")
+        msg = msg.encode()
+        connection_with_server.send(msg)
         msg_rcv = connection_with_server.recv(1024)
+        print(msg_rcv.decode())
+        if unlock():
+            unbook(chamber)
         if msg_rcv == "BOOK":
             diode_on()
+            print("Booked")
     except BrokenPipeError:
         continue
 

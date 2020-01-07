@@ -4,7 +4,11 @@ import socket
 import select
 import signal
 import sys
-from lib import *
+
+import socket
+import select
+import signal
+import sys
 
 def signal_handler(sig, frame):
     print("Connexion fermée")
@@ -13,11 +17,10 @@ def signal_handler(sig, frame):
     connection.close()
     sys.exit(0)
 
-def book(client):
-    client.send("BOOK")
-
-
 def modify_csv(client):
+    pass
+
+def book(chamber):
     pass
 
 host = ''
@@ -53,8 +56,13 @@ while True:
             msg_rcv = client.recv(1024)
             # Peut planter si le message contient des caractères spéciaux
             msg_rcv = msg_rcv.decode()
-            if msg_rcv.split(" ")[0] == "UNBOOK":
+            print(f"Reçu {msg_rcv}")
+            client.send(b"Ok")
+
+            if msg_rcv == "UNBOOK":
                 modify_csv(client)
+                print("unbooked")
+
             if msg_rcv == "END":
                 client.close()
                 clients.remove(client)
