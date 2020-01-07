@@ -21,7 +21,4 @@ Le casier possède deux LEDs :
 ![alt text](https://github.com/thibaultserti/Imagine-and-Make/blob/master/schema.png "Schema")
 
 
-## Licence
 
-Le code utilisé pour le site web provient de https://github.com/derekeder/csv-to-html-table
-Copyright (c) 2018 Derek Eder. Released under the MIT License.
