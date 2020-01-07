@@ -9,6 +9,8 @@ import socket
 import select
 import signal
 import sys
+import sqlite3
+
 
 def signal_handler(sig, frame):
     print("Connexion fermée")
@@ -17,8 +19,24 @@ def signal_handler(sig, frame):
     connection.close()
     sys.exit(0)
 
-def modify_csv(client):
-    pass
+def modify_bdd(client):
+
+    try:
+        sqliteConnection = sqlite3.connect('website/db.sqlite')
+        cursor = sqliteConnection.cursor()
+        print("Base de donnée connectée !")
+        sql_update_query = f"""Update "Chambers" SET "Réservé" = "" WHERE "Numéro de chambre" = {client}"""
+        cursor.execute(sql_update_query)
+        sqliteConnection.commit()
+        print("Record Updated successfully ")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Erreur lors de la connexion", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("La connexion à la BDD a été fermée")
 
 def book(chamber):
     pass
@@ -58,9 +76,10 @@ while True:
             msg_rcv = msg_rcv.decode()
             print(f"Reçu {msg_rcv}")
             client.send(b"Ok")
-
-            if msg_rcv == "UNBOOK":
-                modify_csv(client)
+            msg_rcv = msg_rcv.split(" ")
+            print(msg_rcv)
+            if msg_rcv[0] == "UNBOOK":
+                modify_bdd(msg_rcv[1])
                 print("unbooked")
 
             if msg_rcv == "END":

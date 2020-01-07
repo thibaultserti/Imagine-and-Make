@@ -29,7 +29,7 @@ $first = $data[0];
         <?php foreach ($first as $key => $value): ?>
             <th><?= $key ?></th>
         <?php endforeach; ?>
-        <th>Done</th>
+        <th>Réserver</th>
     </tr>
     </thead>
 
