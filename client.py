@@ -7,6 +7,7 @@ import signal
 import time
 import re 
 from lib_client import *
+import RPi.GPIO as GPIO
 
 
 port = 4242
@@ -31,6 +32,8 @@ else:
     print("Adresse IP invalide")
     exit(0)
 
+GPIO.setmode(GPIO.BOARD)
+r = Rasp(GPIO)
 
 connection_with_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection_with_server.connect((ip, port))
@@ -50,8 +53,9 @@ while msg != b"END" and retry < 5:
         print(msg_rcv.decode())
         if unlock():
             unbook(chamber)
+            Rasp.light1_off()
         if msg_rcv == "BOOK":
-            diode_on()
+            Rasp.light1_on() # allume la diode de réservation
             print("Booked")
     except BrokenPipeError:
         continue
