@@ -35,6 +35,7 @@ else:
 connection_with_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection_with_server.connect((ip, port))
 print(f"Connexion établie avec le serveur sur le {port}")
+connection_with_server.send(chamber.encode())
 
 msg = b""
 retry = 0
