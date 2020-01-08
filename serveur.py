@@ -25,8 +25,8 @@ def modify_bdd(client):
         sqliteConnection = sqlite3.connect('website/db.sqlite')
         cursor = sqliteConnection.cursor()
         print("Base de donnée connectée !")
-        sql_update_query = f"""Update "Chambers" SET "Réservé" = "" WHERE "Numéro de chambre" = {client}"""
-        cursor.execute(sql_update_query)
+        sql_update_query = """Update "Chambers" SET "Réservé" = "" WHERE "Numéro de chambre" = ?"""
+        cursor.execute(sql_update_query, client)
         sqliteConnection.commit()
         print("Record Updated successfully ")
         cursor.close()
