@@ -20,6 +20,7 @@ def signal_handler(sig, frame):
 
 ip = sys.argv[1]
 chamber = sys.argv[2]
+booked = False
 
 regex = '''^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.( 
@@ -51,11 +52,13 @@ while msg != b"END" and retry < 5:
         connection_with_server.send(msg)
         msg_rcv = connection_with_server.recv(1024)
         print(msg_rcv.decode())
-        if unlock():
-            unbook(chamber)
+        if unlock() and booked:
+            connection_with_server.send(f"UNBOOK {chamber}".encode())
+            booked = False
             Rasp.light1_off()
         if msg_rcv == "BOOK":
             Rasp.light1_on() # allume la diode de réservation
+            booked = True
             print("Booked")
     except BrokenPipeError:
         continue

@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 import time
-
-def unlock():
-    pass
-
-def unbook(chamber,con):
-    con.send(f"UNBOOK {chamber}".encode())
-
+def unlock(rasp):
+    if rasp.state() and not(rasp.nfc()):
+        return True
+    else:
+        return False:
 
 class Rasp:
     def __init__(self,gpio,button_pin = 13,led_pin=37):
@@ -35,3 +33,6 @@ class Rasp:
         for i in range(3):
             self.light()
             time.sleep(0.1)
+
+    def nfc():
+        pass
