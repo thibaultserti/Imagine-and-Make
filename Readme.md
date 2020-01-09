@@ -20,5 +20,15 @@ Le casier possède deux LEDs :
 
 ![alt text](https://github.com/thibaultserti/Imagine-and-Make/blob/master/schema.png "Schema")
 
+## Installation
 
+``` bash
+sudo apt install php php-sqlite3
+```
+Il faut activer les drivers sqlite dans `/etc/php/7.3/apache2/php.ini`
+
+puis
+``` bash
+php -S 127.0.0.1:8080
+```
 
