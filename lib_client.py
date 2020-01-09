@@ -20,19 +20,22 @@ class Rasp:
     def state(self):
         return self.GPIO.input(self.button)
     
-    def light1_on(self):
-        self.GPIO.output(self.led1, self.GPIO.HIGH)
     def light1_off(self):
+        self.GPIO.output(self.led1, self.GPIO.HIGH)
+    def light1_on(self):
         self.GPIO.output(self.led1, self.GPIO.LOW)
-    def light2_on(self):
-        self.GPIO.output(self.led2, self.GPIO.HIGH)
     def light2_off(self):
+        self.GPIO.output(self.led2, self.GPIO.HIGH)
+    def light2_on(self):
         self.GPIO.output(self.led2, self.GPIO.LOW)
         
     def startBlink(self):
         for i in range(3):
-            self.light()
+            self.light1_on()
+            self.light2_on()
             time.sleep(0.1)
+            self.light1_off()
+            self.light1_off()
 
     def nfc():
         pass
